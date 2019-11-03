@@ -1,0 +1,9 @@
+html,
+body {
+  font-family: 'open sans', helvetica, arial, sans;
+  overflow: hidden !important;
+  background: #FFFAFA;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

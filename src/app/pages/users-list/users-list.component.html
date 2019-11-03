@@ -1,0 +1,32 @@
+
+<h2>
+  List of exisitng users
+</h2>
+<button (click)="goToCreateUser() " class="btn btn-primary">Login</button>
+
+<mat-table #table [dataSource]="dataSource" class="mat-elevation-z8" >
+
+
+    <!-- userId Column -->
+    <ng-container matColumnDef="userId">
+      <mat-header-cell *matHeaderCellDef> userId </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+    </ng-container>
+
+    <!-- title Column -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> name </mat-header-cell>
+      <mat-cell *matCellDef="let element">  {{ element.firstName }} </mat-cell>
+      
+    </ng-container>
+
+
+    <!-- body Column -->
+    <ng-container matColumnDef="sex">
+      <mat-header-cell *matHeaderCellDef> sex </mat-header-cell>
+      <mat-cell  *matCellDef="let element">  {{ element.gender}}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row   *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
