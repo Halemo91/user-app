@@ -39,22 +39,17 @@ export class AuthenticationService {
    * @returns
    * @memberof AuthenticationService
    */
-  login(username: string, password: string) {
-    return this.http.get<User>("../assets/users.json").pipe(
-      map(user => {
-        console.log("uuuuuuuuuu", user);
-        // login successful if there is a username 
-        if (user) {
-          console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwww", user);
+  login(user: any, pass: string) {
 
+        // login successful if there is a username 
+        if (user && pass) {
           // store user name in storage
           localStorage.setItem("currentUser", JSON.stringify(user));
           this.currentUserSubject.next(user);
+          this.router.navigate(['/users']);
         }
 
-        return user;
-      })
-    );
+   
   }
 
   /**

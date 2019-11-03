@@ -1,9 +1,8 @@
+<div class="user-container">
 
 <h2>
   List of exisitng users
 </h2>
-<button (click)="goToCreateUser() " class="btn btn-primary">Login</button>
-
 <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8" >
 
 
@@ -13,20 +12,32 @@
       <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
     </ng-container>
 
-    <!-- title Column -->
+    <!-- name Column -->
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header> name </mat-header-cell>
-      <mat-cell *matCellDef="let element">  {{ element.firstName }} </mat-cell>
+      <mat-cell *matCellDef="let element">  {{ element.lastName }}, {{ element.firstName }} </mat-cell>
       
     </ng-container>
 
 
-    <!-- body Column -->
-    <ng-container matColumnDef="sex">
-      <mat-header-cell *matHeaderCellDef> sex </mat-header-cell>
-      <mat-cell  *matCellDef="let element">  {{ element.gender}}</mat-cell>
+    <!-- address Column -->
+    <ng-container matColumnDef="address">
+      <mat-header-cell *matHeaderCellDef> address </mat-header-cell>
+      <mat-cell  *matCellDef="let element">  {{ element.address}}</mat-cell>
+    </ng-container>
+
+
+    <!-- dateofbirth Column -->
+    <ng-container matColumnDef="dateOfBirth">
+      <mat-header-cell *matHeaderCellDef> dateOfBirth </mat-header-cell>
+      <mat-cell  *matCellDef="let element">  {{ element.dateOfBirth | date: 'dd/MM/yyyy'}}</mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row   *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
+  <mat-paginator #paginator
+                 [pageSize]="10"
+                 [pageSizeOptions]="[5, 10, 20]">
+  </mat-paginator>
+</div>

@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { AuthenticationService } from "./../../services/authentication.service";
-import { Component, OnInit } from "@angular/core";
-import { MatSort, MatTableDataSource } from "@angular/material";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { MatSort, MatPaginator, MatTableDataSource } from "@angular/material";
 import { User } from "src/app/models";
 
 @Component({
@@ -10,9 +10,12 @@ import { User } from "src/app/models";
   styleUrls: ["./users-list.component.css"]
 })
 export class UsersListComponent implements OnInit {
-  dataSource: User;
-  ELEMENT_DATA: User[] = [];
-  displayedColumns = ["userId", "name", "sex"];
+  dataSource: any;
+  ELEMENT_DATA: any;
+  displayedColumns = ["userId", "name", "address", "dateOfBirth"];
+
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+
 
   constructor(private authenticationService: AuthenticationService,
     private router: Router
@@ -21,6 +24,7 @@ export class UsersListComponent implements OnInit {
 
   ngOnInit() {
     this.getUsers();
+
   }
   /**
    *get users from user list
@@ -33,8 +37,12 @@ export class UsersListComponent implements OnInit {
       .pipe()
       .subscribe(
         data => {
-          console.log(data);
-          this.dataSource = data;
+         
+          this.ELEMENT_DATA = data;
+          this.dataSource =new MatTableDataSource<User>(this.ELEMENT_DATA);
+          this.dataSource.paginator = this.paginator;
+          console.log(this.dataSource)
+
         },
         error => {
           console.log(error);

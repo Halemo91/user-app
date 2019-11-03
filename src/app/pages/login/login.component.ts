@@ -11,7 +11,6 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  loading = false;
   submitted = false;
   returnUrl: string;
   constructor(
@@ -48,26 +47,11 @@ export class LoginComponent implements OnInit {
    */
   onSubmit() {
     this.submitted = true;
-
     // stop here if form is invalid
     if (this.loginForm.invalid) {
       return;
     }
-
-    this.loading = true;
     this.authenticationService
-      .login(this.formField.username.value, this.formField.password.value)
-      .subscribe(
-        data => {
-          console.log(data);
-          this.router.navigate([this.returnUrl]);
-        },
-        error => {
-          console.log(error);
-          this.snackBar.open("error", "OK", {
-            duration: 5000
-          });
-        }
-      );
+      .login(this.formField.username.value, this.formField.password.value);
   }
 }

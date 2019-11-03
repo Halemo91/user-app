@@ -24,8 +24,7 @@
       <mat-sidenav-content >
         <mat-toolbar style="background-color:#4169E1">
           <mat-icon (click)="toggleMenu()" class="pointer">menu</mat-icon>
-          <h1>{{title}}</h1>
-          <app-header title='User lists'>
+          <app-header [title]="title">
           </app-header>
     
         </mat-toolbar>

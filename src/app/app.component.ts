@@ -13,17 +13,26 @@ export class AppComponent implements OnInit {
   open: boolean;
   routeSubscription: Subscription;
   currentURL: String;
+  title: any;
 
-  title = "first-app";
   constructor(
     private authenticationService: AuthenticationService,
     private router: Router,
     private location: Location
   ) {}
+  
 ngOnInit(){
   this.routeSubscription = this.router.events.subscribe((event) => {
     this.currentURL = this.location.path();
   });
+  this.authenticationService.currentUser.subscribe(
+    response => {
+       console.log(response)
+       if(response){
+         this.title = response;
+       }
+    });
+  
 }
   /**
    * this function is responsible for showing and hiding the left side bar from the header

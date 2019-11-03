@@ -12,7 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {
-  MatSnackBarModule, MatSidenavModule, MatTableModule, MatIconModule, MatToolbarModule
+  MatSnackBarModule, MatSidenavModule, MatTableModule, MatIconModule, MatToolbarModule, MatPaginatorModule
 } from '@angular/material';
 
 @NgModule({
@@ -31,7 +31,8 @@ import {
     MatTableModule,
     MatIconModule,
     MatToolbarModule,
-    MatTableModule
+    MatTableModule,
+    MatPaginatorModule
 
   ],
   providers: [

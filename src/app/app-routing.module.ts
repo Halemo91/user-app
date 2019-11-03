@@ -11,7 +11,7 @@ const routing: Routes = [
   { path: 'users', component: UsersListComponent, canActivate: [AuthGuard] },
   //{ path: '', component: UsersListComponent},
   { path: 'login', component: LoginComponent },
-  { path: 'user/:id', component: CreateUserComponent },
+  { path: 'user/:id', component: CreateUserComponent,  canActivate: [AuthGuard] },
   // otherwise redirect to usersComponent
   { path: '**', redirectTo: 'users' }
 ];
