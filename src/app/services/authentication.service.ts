@@ -5,6 +5,12 @@ import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, Observable } from "rxjs";
 import { User } from "../models";
 
+/**
+ * This service is responsible for the user authentication and getting and saving user data to storage
+ *
+ * @export
+ * @class AuthenticationService
+ */
 @Injectable({
   providedIn: "root"
 })
@@ -13,6 +19,7 @@ export class AuthenticationService {
   private newUsersSubject: BehaviorSubject<User>;
   public currentUser: Observable<string>;
   public newUsers: Observable<User>;
+  public loading: boolean;
 
   constructor(
     private http: HttpClient,
@@ -83,29 +90,59 @@ export class AuthenticationService {
     return this.http.get<User>("../assets/users.json");
   }
 
-  saveUser(body) {
+  /**
+   * This function is to create new user and add it to newuserssubject to get it as Observable in the user list component
+   *
+   * @param {*} body
+   * @memberof AuthenticationService
+   */
+  saveUser(body: User) {
+    this.loading = true;
+    let addressConc =
+      body.address.street +
+      " " +
+      body.address.houseNumber +
+      "," +
+      body.address.zip +
+      " " +
+      body.address.city;
     body = {
-      id: "55555555555555555",
-      firstName: "5555555555",
-      lastName: "5555555",
-      gender: "male",
-      email: "gentrybird@skinserve.com",
-      dateOfBirth:
-        "Mon Jun 03 1991 15:45:39 GMT+0200 (Central European Summer Time)",
-      phone: "+0049 (870) 545-2047",
-      address: "418 Sumner Place, Munjor, Indiana, 5613"
+      id: Math.random()
+        .toString(36)
+        .substr(2, 9),
+      firstName: body.firstName,
+      lastName: body.lastName,
+      dateOfBirth: body.dateOfBirth,
+      address: addressConc
     };
+    //This part should be a post request, but as it is not possible to post to a local json file, this sol is a fake one.
     this.http
       .get<any>("../assets/users.json", { observe: "body" })
       .subscribe(data => {
-        data.push(body);
-        console.log(data);
-        localStorage.setItem("newUserList", JSON.stringify(data));
+        if (data && body) {
+          let oldList = JSON.parse(localStorage.getItem("newUserList"));
+          if (oldList) {
+            oldList.push(body);
+            localStorage.setItem("newUserList", JSON.stringify(oldList));
+            this.newUsersSubject.next(oldList);
+          } else {
+            data.push(body);
+            localStorage.setItem("newUserList", JSON.stringify(data));
+            this.newUsersSubject.next(data);
+          }
 
-        this.newUsersSubject.next(data);
-        this.snackBar.open("save success", "ok", {
-          duration: 5000
-        });
+          this.snackBar.open("save success", "ok", {
+            duration: 5000
+          });
+          // just to show the loading icon for few milli second
+          setTimeout(() => {
+            this.loading = false;
+            this.router.navigateByUrl("/users");
+          }, 500);
+        } else {
+          this.newUsersSubject.next(null);
+          this.loading = false;
+        }
       });
   }
 }

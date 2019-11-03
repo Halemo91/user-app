@@ -1,13 +1,13 @@
-<div *ngIf="loading" layout vertical center-center fit class="progress-spinner">
-        <mat-progress-spinner [color]="'primary'" [mode]="'indeterminate'" [diameter]="20">
-        </mat-progress-spinner>
+<div *ngIf="loading" layout vertical center-center fit class="spinner-container progress-spinner">
+  <mat-progress-spinner [color]="'primary'" [mode]="'indeterminate'" [diameter]="20">
+  </mat-progress-spinner>
 </div>
-<div class ="create-user-container">
+<div class="create-user-container">
   <h2>
-    create user
+    Create user
   </h2>
   <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-    <div class="create-user-form user-form">
+    <div class="create-user-form user-display-form ">
       <mat-form-field hintLabel="Max 20 characters">
         <input matInput #input maxlength="20" placeholder="First name" formControlName="firstName" required>
         <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
@@ -21,12 +21,12 @@
 
       <mat-form-field>
         <input class="pointer" matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" (focus)="picker.open()"
-          placeholder="date of birth" formControlName="date" [readonly]="true">
+          placeholder="date of birth" formControlName="dateOfBirth" [readonly]="true">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
 
-      <div formGroupName="address" class="user-form addressForm">
+      <div formGroupName="address" class="user-display-form  addressForm">
 
         <h5>Address</h5>
         <mat-form-field hintLabel="Max 20 characters">
@@ -34,20 +34,22 @@
           <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
         </mat-form-field>
         <mat-form-field hintLabel="Max 20 characters">
-          <input matInput #input maxlength="20" placeholder="city" formControlName="city">
-          <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
-        </mat-form-field>
-        <mat-form-field hintLabel="Max 20 characters">
-          <input matInput #input maxlength="20" placeholder="state" formControlName="state">
+          <input matInput #input maxlength="20" placeholder="house number" formControlName="houseNumber">
           <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
         </mat-form-field>
         <mat-form-field hintLabel="Max 20 characters">
           <input matInput #input maxlength="20" placeholder="zip" formControlName="zip">
           <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
         </mat-form-field>
+        <mat-form-field hintLabel="Max 20 characters">
+          <input matInput #input maxlength="20" placeholder="city" formControlName="city">
+          <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
+        </mat-form-field>
+
       </div>
       <div>
-        <button class="btn btn-primary" style = "margin-bottom: 10px;"type="submit" [disabled]="!userForm.valid">Submit</button>
+        <button class="btn btn-primary" style="margin-bottom: 10px;" type="submit"
+          [disabled]="!userForm.valid || issubmitted">Submit</button>
 
       </div>
 
@@ -55,4 +57,3 @@
   </form>
 
 </div>
-

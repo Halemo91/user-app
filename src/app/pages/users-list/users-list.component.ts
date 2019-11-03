@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { Router } from "@angular/router";
 import { AuthenticationService } from "./../../services/authentication.service";
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { MatSort, MatPaginator, MatTableDataSource } from "@angular/material";
@@ -10,34 +10,37 @@ import { User } from "src/app/models";
   styleUrls: ["./users-list.component.css"]
 })
 export class UsersListComponent implements OnInit {
-  dataSource: any;
+  dataSource: any= [];
   ELEMENT_DATA: any;
   displayedColumns = ["userId", "name", "address", "dateOfBirth"];
+  paginator: any;
 
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  //@ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: false }) set matPaginator(mp: MatPaginator) {
+    this.paginator = mp;
+    this.dataSource.paginator = this.paginator;
+}
 
-
-  constructor(private authenticationService: AuthenticationService,
+  constructor(
+    private authenticationService: AuthenticationService,
     private router: Router
+  ) {}
 
-   ) {}
-
+  /**
+   * Getting the userlist from the json file or if user enters new user data it will get it from the local storage
+   *
+   * @memberof UsersListComponent
+   */
   ngOnInit() {
-    
-    this.authenticationService.newUsers.subscribe(
-      response => {
-         if(response && response[0]){
-              console.log('rrrrrrrrrr',response);
-              this.ELEMENT_DATA = response;
-              this.dataSource =new MatTableDataSource<User>(this.ELEMENT_DATA);
-              this.dataSource.paginator = this.paginator;
-
-         }else{
-          console.log('dddd',this.ELEMENT_DATA)
-          this.getUsers();
-
-         }
-      });
+    this.authenticationService.newUsers.subscribe(response => {
+      this.ELEMENT_DATA = [];
+      if (response && response[0]) {
+        this.ELEMENT_DATA = response;
+        this.dataSource = new MatTableDataSource<User>(this.ELEMENT_DATA);
+      } else {
+        this.getUsers();
+      }
+    });
   }
   /**
    *get users from user list
@@ -50,16 +53,12 @@ export class UsersListComponent implements OnInit {
       .pipe()
       .subscribe(
         data => {
-         
           this.ELEMENT_DATA = data;
-          this.dataSource =new MatTableDataSource<User>(this.ELEMENT_DATA);
-          this.dataSource.paginator = this.paginator;
-
+          this.dataSource = new MatTableDataSource<User>(this.ELEMENT_DATA);
         },
         error => {
           console.log(error);
         }
       );
-
   }
 }

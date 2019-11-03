@@ -96,12 +96,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, authenticationService: <a href="../injectables/AuthenticationService.html">AuthenticationService</a>)</code>
+<code>constructor(router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, authenticationService: <a href="../injectables/AuthenticationService.html">AuthenticationService</a>, snackBar: MatSnackBar)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/guards/auth.guard.ts:6</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">src/app/guards/auth.guard.ts:7</a></div>
                             </td>
                         </tr>
 
@@ -135,6 +135,18 @@
                                                   
                                                         <td>
                                                                         <code><a href="../injectables/AuthenticationService.html" target="_self" >AuthenticationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>snackBar</td>
+                                                  
+                                                        <td>
+                                                                    <code>MatSnackBar</code>
                                                         </td>
                                                   
                                                     <td>
@@ -178,8 +190,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="12"
-                            class="link-to-prism">src/app/guards/auth.guard.ts:12</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="14"
+                            class="link-to-prism">src/app/guards/auth.guard.ts:14</a></div>
                 </td>
             </tr>
 
@@ -244,7 +256,8 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AuthenticationService } from &#x27;./../services/authentication.service&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { MatSnackBar } from &#x27;@angular/material/snack-bar&#x27;;
+import { AuthenticationService } from &#x27;./../services/authentication.service&#x27;;
 import { Injectable } from &#x27;@angular/core&#x27;;
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from &#x27;@angular/router&#x27;;
 
@@ -252,18 +265,20 @@ import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from
 export class AuthGuard  {
     constructor(
         private router: Router,
-        private authenticationService: AuthenticationService
+        private authenticationService: AuthenticationService,
+        private snackBar: MatSnackBar
     ) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const currentUser &#x3D; this.authenticationService.currentUserValue;
         if (currentUser) {
-            // authorised so return true
             return true;
         }
-
-        // not logged in so redirect to login page with the return url
-        this.router.navigate([&#x27;/login&#x27;], { queryParams: { returnUrl: state.url }});
+        this.snackBar.open(&quot;You dont have permission&quot;, &quot;ok&quot;, {
+            duration: 5000
+          });
+        // not logged in so redirect to login page 
+        this.router.navigate([&#x27;/login&#x27;]);
         return false;
     }
 }</code></pre>

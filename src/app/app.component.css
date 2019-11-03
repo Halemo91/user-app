@@ -5,15 +5,17 @@
   left: 0;
   right: 0;
 }
-mat-toolbar-row {
 
+mat-toolbar-row,.sideNavBackground {
   background-color: #F0FFFF;
 }
 mat-toolbar-row:hover {
   cursor: pointer;
 }
+.matToolbarHeader{
+  background-color:#4169E1
+}
 .activeBar{
   background-color: gray;
-
 }
 

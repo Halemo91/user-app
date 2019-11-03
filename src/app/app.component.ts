@@ -1,8 +1,8 @@
 import { Router } from "@angular/router";
 import { AuthenticationService } from "./services/authentication.service";
-import { Component , OnInit} from "@angular/core";
-import { Subscription } from 'rxjs';
-import { Location } from '@angular/common';
+import { Component, OnInit } from "@angular/core";
+import { Subscription } from "rxjs";
+import { Location } from "@angular/common";
 
 @Component({
   selector: "app-root",
@@ -20,19 +20,19 @@ export class AppComponent implements OnInit {
     private router: Router,
     private location: Location
   ) {}
-  
-ngOnInit(){
-  this.routeSubscription = this.router.events.subscribe((event) => {
-    this.currentURL = this.location.path();
-  });
-  this.authenticationService.currentUser.subscribe(
-    response => {
-       if(response){
-         this.title = response;
-       }
+
+  ngOnInit() {
+    // to get the current url
+    this.routeSubscription = this.router.events.subscribe(event => {
+      this.currentURL = this.location.path();
     });
-  
-}
+    //getting the username from storage service
+    this.authenticationService.currentUser.subscribe(response => {
+      if (response) {
+        this.title = response;
+      }
+    });
+  }
   /**
    * this function is responsible for showing and hiding the left side bar from the header
    *

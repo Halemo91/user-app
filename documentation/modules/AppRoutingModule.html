@@ -80,16 +80,12 @@ import { Routes, RouterModule } from &#x27;@angular/router&#x27;;
 
 const routing: Routes &#x3D; [
 
-  { path: &#x27;&#x27;, component: UsersListComponent, canActivate: [AuthGuard] },
-  //{ path: &#x27;&#x27;, component: UsersListComponent},
+  { path: &#x27;users&#x27;, component: UsersListComponent, canActivate: [AuthGuard] },
   { path: &#x27;login&#x27;, component: LoginComponent },
-  { path: &#x27;user/:id&#x27;, component: CreateUserComponent },
+  { path: &#x27;user/:id&#x27;, component: CreateUserComponent, canActivate: [AuthGuard] },
   // otherwise redirect to usersComponent
-  { path: &#x27;**&#x27;, redirectTo: &#x27;&#x27; }
+  { path: &#x27;**&#x27;, redirectTo: &#x27;users&#x27; }
 ];
-
-
-//export const AppRoutingModule &#x3D; RouterModule.forRoot(routing);
 
 @NgModule({
   imports: [
