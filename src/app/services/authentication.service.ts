@@ -1,23 +1,32 @@
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, Observable } from "rxjs";
-import { map } from "rxjs/operators";
 import { User } from "../models";
-import { Route } from "@angular/compiler/src/core";
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthenticationService {
-  private currentUserSubject: BehaviorSubject<User>;
-  public currentUser: Observable<User>;
+  private currentUserSubject: BehaviorSubject<string>;
+  private newUsersSubject: BehaviorSubject<User>;
+  public currentUser: Observable<string>;
+  public newUsers: Observable<User>;
 
-  constructor(private http: HttpClient, private router: Router) {
-    this.currentUserSubject = new BehaviorSubject<User>(
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {
+    this.currentUserSubject = new BehaviorSubject<string>(
       JSON.parse(localStorage.getItem("currentUser"))
     );
     this.currentUser = this.currentUserSubject.asObservable();
+    this.newUsersSubject = new BehaviorSubject<User>(
+      JSON.parse(localStorage.getItem("newUserList"))
+    );
+    this.newUsers = this.newUsersSubject.asObservable();
   }
 
   /**
@@ -27,7 +36,7 @@ export class AuthenticationService {
    * @type {User}
    * @memberof AuthenticationService
    */
-  public get currentUserValue(): User {
+  public get currentUserValue(): string {
     return this.currentUserSubject.value;
   }
 
@@ -40,16 +49,13 @@ export class AuthenticationService {
    * @memberof AuthenticationService
    */
   login(user: any, pass: string) {
-
-        // login successful if there is a username 
-        if (user && pass) {
-          // store user name in storage
-          localStorage.setItem("currentUser", JSON.stringify(user));
-          this.currentUserSubject.next(user);
-          this.router.navigate(['/users']);
-        }
-
-   
+    // login successful if there is a username
+    if (user && pass) {
+      // store user name in storage
+      localStorage.setItem("currentUser", JSON.stringify(user));
+      this.currentUserSubject.next(user);
+      this.router.navigate(["/users"]);
+    }
   }
 
   /**
@@ -61,6 +67,9 @@ export class AuthenticationService {
     // remove user from local storage to log user out
     localStorage.removeItem("currentUser");
     this.currentUserSubject.next(null);
+
+    localStorage.removeItem("newUserList");
+    this.newUsersSubject.next(null);
     this.router.navigateByUrl("/login");
   }
 
@@ -70,7 +79,33 @@ export class AuthenticationService {
    * @returns
    * @memberof AuthenticationService
    */
-  getUsers() {
+  getUsers(): Observable<User> {
     return this.http.get<User>("../assets/users.json");
+  }
+
+  saveUser(body) {
+    body = {
+      id: "55555555555555555",
+      firstName: "5555555555",
+      lastName: "5555555",
+      gender: "male",
+      email: "gentrybird@skinserve.com",
+      dateOfBirth:
+        "Mon Jun 03 1991 15:45:39 GMT+0200 (Central European Summer Time)",
+      phone: "+0049 (870) 545-2047",
+      address: "418 Sumner Place, Munjor, Indiana, 5613"
+    };
+    this.http
+      .get<any>("../assets/users.json", { observe: "body" })
+      .subscribe(data => {
+        data.push(body);
+        console.log(data);
+        localStorage.setItem("newUserList", JSON.stringify(data));
+
+        this.newUsersSubject.next(data);
+        this.snackBar.open("save success", "ok", {
+          duration: 5000
+        });
+      });
   }
 }

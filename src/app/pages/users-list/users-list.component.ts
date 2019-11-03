@@ -23,8 +23,21 @@ export class UsersListComponent implements OnInit {
    ) {}
 
   ngOnInit() {
-    this.getUsers();
+    
+    this.authenticationService.newUsers.subscribe(
+      response => {
+         if(response && response[0]){
+              console.log('rrrrrrrrrr',response);
+              this.ELEMENT_DATA = response;
+              this.dataSource =new MatTableDataSource<User>(this.ELEMENT_DATA);
+              this.dataSource.paginator = this.paginator;
 
+         }else{
+          console.log('dddd',this.ELEMENT_DATA)
+          this.getUsers();
+
+         }
+      });
   }
   /**
    *get users from user list
@@ -41,16 +54,12 @@ export class UsersListComponent implements OnInit {
           this.ELEMENT_DATA = data;
           this.dataSource =new MatTableDataSource<User>(this.ELEMENT_DATA);
           this.dataSource.paginator = this.paginator;
-          console.log(this.dataSource)
 
         },
         error => {
           console.log(error);
         }
       );
-  }
-  goToCreateUser(){
-    this.router.navigateByUrl("/user/:id");
 
   }
 }

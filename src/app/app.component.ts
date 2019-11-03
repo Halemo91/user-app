@@ -27,7 +27,6 @@ ngOnInit(){
   });
   this.authenticationService.currentUser.subscribe(
     response => {
-       console.log(response)
        if(response){
          this.title = response;
        }

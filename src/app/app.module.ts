@@ -10,9 +10,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import {
-  MatSnackBarModule, MatSidenavModule, MatTableModule, MatIconModule, MatToolbarModule, MatPaginatorModule
+  MatSnackBarModule, MatSidenavModule, MatTableModule, MatIconModule, MatToolbarModule, MatPaginatorModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatProgressSpinnerModule
 } from '@angular/material';
 
 @NgModule({
@@ -32,10 +32,15 @@ import {
     MatIconModule,
     MatToolbarModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatProgressSpinnerModule
 
   ],
   providers: [
+    MatDatepickerModule
   ],
   bootstrap: [AppComponent]
 })

@@ -9,15 +9,11 @@ import { Routes, RouterModule } from '@angular/router';
 const routing: Routes = [
 
   { path: 'users', component: UsersListComponent, canActivate: [AuthGuard] },
-  //{ path: '', component: UsersListComponent},
   { path: 'login', component: LoginComponent },
-  { path: 'user/:id', component: CreateUserComponent,  canActivate: [AuthGuard] },
+  { path: 'user/:id', component: CreateUserComponent, canActivate: [AuthGuard] },
   // otherwise redirect to usersComponent
   { path: '**', redirectTo: 'users' }
 ];
-
-
-//export const AppRoutingModule = RouterModule.forRoot(routing);
 
 @NgModule({
   imports: [
